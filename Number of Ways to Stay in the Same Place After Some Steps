@@ -1,0 +1,21 @@
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        mod = 10**9 + 7
+        maxPos = min(steps // 2, arrLen - 1)
+        dp = [[0] * (maxPos + 1) for _ in range(steps + 1)]
+        dp[0][0] = 1
+        for i in range(1, steps + 1):
+            for j in range(maxPos + 1):
+                dp[i][j] = dp[i - 1][j]
+                if j > 0:
+                    dp[i][j] += dp[i - 1][j - 1]
+                if j < maxPos:
+                    dp[i][j] += dp[i - 1][j + 1]
+                dp[i][j] %= mod
+
+        return dp[steps][0]
+solution = Solution()
+steps = 3
+arrLen = 2
+result = solution.numWays(steps, arrLen)
+print(result)
