@@ -1,0 +1,74 @@
+#You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists. Implement an iterator to flatten it.
+#Implement the NestedIterator class:
+#NestedIterator(List<NestedInteger> nestedList) Initializes the iterator with the nested list nestedList.
+#int next() Returns the next integer in the nested list.
+#boolean hasNext() Returns true if there are still some integers in the nested list and false otherwise.
+#Your code will be tested with the following pseudocode:
+#initialize iterator with nestedList
+#res = []
+#while iterator.hasNext()
+    #append iterator.next() to the end of res
+#return res
+#If res matches the expected flattened list, then your code will be judged as correct.
+
+# Define the NestedInteger class if it's not already provided
+class NestedInteger:
+    def __init__(self, value=None, nested_list=None):
+        self.value = value
+        self.nested_list = nested_list
+
+    def isInteger(self):
+        return self.nested_list is None
+
+    def getInteger(self):
+        return self.value
+
+    def getList(self):
+        return self.nested_list
+
+class NestedIterator:
+    def __init__(self, nestedList):
+        self.stack = []
+        # Initialize the stack with reversed nestedList
+        for i in reversed(nestedList):
+            self.stack.append(i)
+
+    def next(self):
+        # Ensure that there is an integer to return
+        if self.hasNext():
+            # Pop and return the top integer
+            return self.stack.pop().getInteger()
+
+    def hasNext(self):
+        # Continue processing until the stack is empty
+        while self.stack:
+            # Get the top element from the stack
+            top = self.stack[-1]
+            if top.isInteger():
+                return True
+            # If it's a list, pop it and push its elements onto the stack in reverse order
+            self.stack.pop()
+            for item in reversed(top.getList()):
+                self.stack.append(item)
+        return False
+
+# Ask the user to input the nested list
+def get_user_input():
+    nested_list = eval(input("Enter a nested list (e.g., [1, [2, 3], [4, [5]]]): "))
+    return nested_list
+
+if __name__ == "__main__":
+    nestedList = get_user_input()
+    
+    # Initialize the iterator with the user-provided nested list
+    iterator = NestedIterator(nestedList)
+
+    # Create a list to store the flattened result
+    res = []
+
+    # Iterate through the flattened list and append each integer to the result list
+    while iterator.hasNext():
+        res.append(iterator.next())
+
+    # Print the result
+    print(res)
