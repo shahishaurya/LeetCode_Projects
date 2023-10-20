@@ -1,0 +1,21 @@
+#Given two strings s and t, return true if they are equal when both are typed into empty text editors.'#' means a backspace character.
+#Note that after backspacing an empty text, the text will continue empty.
+
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        def buildString(input_str):
+            result = []
+            for char in input_str:
+                if char != '#':
+                    result.append(char)
+                elif result:
+                    result.pop()
+            return ''.join(result)
+
+        return buildString(s) == buildString(t)
+
+solution = Solution()
+s = "ab#c"
+t = "ad#c"
+result = solution.backspaceCompare(s, t)
+print(result)  # Output: True
